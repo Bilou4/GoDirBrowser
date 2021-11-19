@@ -86,10 +86,37 @@ func GetDirectory(c *gin.Context) {
 				"title":             "Home Page",
 				"file_list":         fileList,
 				"parent_directory":  parentDir,
-				"current_directory": RootDirectory + path + subpath,
+				"root_directory":    RootDirectory,
+				"current_directory": path + subpath,
 			},
 		)
 	} else {
 		GetFile(c)
 	}
+}
+
+// Upload uploads a single file on the server
+func Upload(c *gin.Context) {
+	path := strings.TrimPrefix(c.Param("path"), "/")
+
+	file, err := c.FormFile("File")
+	if err != nil {
+		c.HTML(
+			http.StatusBadRequest,
+			"error.html",
+			gin.H{
+				"title":   "Upload failed",
+				"message": err.Error(),
+			},
+		)
+		return
+	}
+
+	// Upload the file to specific dst.
+	err = c.SaveUploadedFile(file, RootDirectory+path+"/"+file.Filename)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	c.Redirect(http.StatusMovedPermanently, c.Request.Referer())
 }

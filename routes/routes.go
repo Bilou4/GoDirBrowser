@@ -33,4 +33,6 @@ func CreateRoutes() {
 
 	Router.GET("/:path", handlers.GetFile)
 	Router.GET("/:path/*subpath", handlers.GetDirectory)
+
+	Router.POST("/upload/*path", handlers.Upload)
 }
