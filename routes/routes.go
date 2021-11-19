@@ -24,8 +24,9 @@ func CreateRoutes() {
 			"index.html",
 			// Pass the data that the page uses (in this case, 'title')
 			gin.H{
-				"title":     "Home Page",
-				"file_list": fileList,
+				"title":             "Home Page",
+				"file_list":         fileList,
+				"current_directory": RootDirectory,
 			},
 		)
 	})

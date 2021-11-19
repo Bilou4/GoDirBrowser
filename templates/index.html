@@ -3,49 +3,61 @@
 <!--Embed the header.html template at this location-->
 {{ template "header.html" .}}
 
-<h1>{{ .title }}</h1>
+<h3>{{ .current_directory }}</h3>
 
-{{$parent_dir := .parent_dir}}
-{{ if $parent_dir }}{{$parent_dir}}{{end}}
-
+<button type="button" class="btn btn-light">
+    <i class="bi bi-arrow-return-left">
+        <a href="{{ .parent_directory }}" class="link-dark">Back -- {{ .parent_directory }}</a>
+    </i>
+</button>
 <!-- Table -->
 <section class="table_p table-responsive">
     <table id="tableData" class="table table-hover compact">
         <thead>
-        <tr>
-            <th width="4%"><!--Type (Directory or File)--></th>
-            <th>Name</th>
-            <th>Size</th>
-            <th>Last Modified</th>
-            <th></th> <!-- View file -->
-        </tr>
-        </thead>
-        <tbody>
-        {{ range $file := .file_list }}
             <tr>
-                <td> <!-- Icon -->
+                <th width="4%"><!--Type (Directory or File)--></th>
+                <th>Permissions</th>
+                <th>Name</th>
+                <th>Size</th>
+                <th>Last Modified</th>
+                <th></th>
+                <!-- View file -->
+            </tr>
+        </thead>
+        <tbody class=".table-hover">
+            {{ range $file := .file_list }}
+            <tr>
+                <td>
+                    <!-- Icon -->
                     {{ if $file.IsDir }}
-                        <i class="bi bi-folder"></i><!-- Directory icon -->
+                    <i class="bi bi-folder"></i
+                    ><!-- Directory icon -->
                     {{ else }}
-                        <i class="bi bi-file-text"></i><!-- File icon -->
+                    <i class="bi bi-file-text"></i
+                    ><!-- File icon -->
                     {{ end }}
                 </td>
-                <td> <!-- Name -->
+                <td>{{ $file.Mode }}</td>
+                <td>
+                    <!-- Name -->
                     <a href="{{$file.Name}}{{ if $file.IsDir }}/{{ end }}">{{$file.Name}}</a>
                 </td>
-                <td data-order=""> <!-- File size -->
+                <td data-order="">
+                    <!-- File size -->
                     {{ $file.Size }}
                 </td>
-                <td data-order=""> <!-- File last modified -->
+                <td data-order="">
+                    <!-- File last modified -->
                     {{ $file.ModTime }}
                 </td>
-                <td> <!-- View file -->
+                <td>
+                    <!-- View file -->
                     {{ if not $file.IsDir }}
                     <a href="{{$file.Name}}{{ if $file.IsDir }}/{{ end }}?view">View in browser</a>
                     {{ end }}
                 </td>
             </tr>
-        {{ end }}
+            {{ end }}
         </tbody>
     </table>
 </section>

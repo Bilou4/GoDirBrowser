@@ -64,15 +64,29 @@ func GetDirectory(c *gin.Context) {
 	if err != nil {
 		log.Println(err)
 	}
+
 	if file.IsDir() {
 		fileList, _ := utils.GetFileList(RootDirectory + path + subpath)
+		var parentDir string = "/"
+
+		if subpath != "" {
+			nbSlash := strings.Count(subpath, "/")
+			parentDir += path
+
+			if nbSlash > 1 {
+				splitRes := strings.SplitAfterN(subpath, "/", -1)
+				parentDir += strings.Join(splitRes[:len(splitRes)-1], "")
+			}
+		}
+
 		c.HTML(
 			http.StatusOK,
 			"index.html",
 			gin.H{
-				"title":            "Home Page",
-				"file_list":        fileList,
-				"parent_directory": path + subpath,
+				"title":             "Home Page",
+				"file_list":         fileList,
+				"parent_directory":  parentDir,
+				"current_directory": RootDirectory + path + subpath,
 			},
 		)
 	} else {
