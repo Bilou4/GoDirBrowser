@@ -1,6 +1,9 @@
 package main
 
 import (
+	"flag"
+	"strconv"
+
 	"github.com/gin-gonic/gin"
 
 	. "github.com/bilou4/GoDirBrowser/constants"
@@ -8,6 +11,18 @@ import (
 )
 
 func main() {
+
+	var port int = 8080
+	var password string
+	var ssl bool
+
+	flag.StringVar(&RootDirectory, "directory", InitVar(), "Serve from another directory")
+	flag.IntVar(&port, "port", 8080, "Serve from another port than 8080")
+	flag.StringVar(&password, "password", "1234", "Password protect the page")
+	flag.BoolVar(&ssl, "ssl", false, "Use an SSL connection")
+
+	flag.Parse()
+
 	// Set Gin to production mode
 	gin.SetMode(gin.DebugMode)
 
@@ -21,6 +36,6 @@ func main() {
 	routes.CreateRoutes()
 
 	// Start serving the application
-	Router.Run()
+	Router.Run(":" + strconv.Itoa(port))
 
 }
