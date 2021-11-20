@@ -9,13 +9,13 @@ import (
 
 var (
 	Router        *gin.Engine
-	RootDirectory = initVar()
+	RootDirectory string
 )
 
-func initVar() string {
+func InitVar() string {
 	rootDirectory, err := os.Getwd() // directory where uploaded files are stored
 	if err != nil {
 		log.Println(err)
 	}
-	return rootDirectory + "/"
+	return rootDirectory
 }

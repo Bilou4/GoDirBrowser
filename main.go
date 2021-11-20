@@ -23,6 +23,10 @@ func main() {
 
 	flag.Parse()
 
+	if c := RootDirectory[len(RootDirectory)-1]; string(c) != "/" {
+		RootDirectory += "/"
+	}
+
 	// Set Gin to production mode
 	gin.SetMode(gin.DebugMode)
 
