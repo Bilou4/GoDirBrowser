@@ -2,6 +2,8 @@ package main
 
 import (
 	"flag"
+	"log"
+	"os"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -37,9 +39,21 @@ func main() {
 	Router.LoadHTMLGlob("templates/*")
 
 	// instantiate routes
-	routes.CreateRoutes()
+	routes.CreateRoutes(password)
 
 	// Start serving the application
-	Router.Run(":" + strconv.Itoa(port))
+	if ssl {
+		certificateFileName := "certificate.crt"
+		certificateKeyFileName := "certificate_key.key"
+		if _, err := os.Stat(certificateFileName); err != nil {
+			log.Fatalf("Cannot find certificate file")
+		}
+		if _, err := os.Stat(certificateKeyFileName); err != nil {
+			log.Fatalf("Cannot find certificate key file")
+		}
+		Router.RunTLS(":"+strconv.Itoa(port), certificateFileName, certificateKeyFileName)
+	} else {
+		Router.Run(":" + strconv.Itoa(port))
+	}
 
 }
