@@ -20,7 +20,7 @@ func main() {
 
 	flag.StringVar(&RootDirectory, "directory", InitVar(), "Serve from another directory")
 	flag.IntVar(&port, "port", 8080, "Serve from another port than 8080")
-	flag.StringVar(&password, "password", "1234", "Password protect the page")
+	flag.StringVar(&password, "password", "", "Password protect the page")
 	flag.BoolVar(&ssl, "ssl", false, "Use an SSL connection")
 
 	flag.Parse()
