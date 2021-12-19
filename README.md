@@ -9,8 +9,8 @@ File sharing (upload/download) application over HTTP, written in Go.
 Make sure that Go (tested on `go version 1.17linux/amd64`) is installed on your computer.
 ```sh
 go mod tidy
-go build -ldflags "-w -s" -o GoDirBrowser.out
-./GoDirBrowser.out # The server is running on localhost:8080.
+go build -ldflags "-w -s" -trimpath -o GoDirBrowser.out
+./GoDirBrowser.out # The server is running on localhost:8080 by default.
 ```
 
 ### Usage
@@ -28,9 +28,8 @@ go build -ldflags "-w -s" -o GoDirBrowser.out
 
 ## TODO
 
-+ Embed HTML files in the final binary
-+ TLS - do not depend on static file
-+ Github release - generate multiple architectures for targets
++ [ ] TLS - do not depend on static files
+
 
 ## Framework used
 
