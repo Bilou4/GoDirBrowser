@@ -1,16 +1,22 @@
 package main
 
 import (
+	"embed"
 	"flag"
+	"html/template"
 	"log"
 	"os"
 	"strconv"
 
+	"github.com/gin-contrib/multitemplate"
 	"github.com/gin-gonic/gin"
 
 	. "github.com/bilou4/GoDirBrowser/constants"
 	"github.com/bilou4/GoDirBrowser/routes"
 )
+
+//go:embed templates/*
+var templatesFS embed.FS
 
 func main() {
 
@@ -36,7 +42,26 @@ func main() {
 	Router = gin.Default()
 
 	// Process the templates at the start so that they don't have to be loaded from the disk again.
-	Router.LoadHTMLGlob("templates/*")
+	render := multitemplate.New()
+
+	list := [...]string{
+		"error.html",
+		"index.html",
+	}
+
+	for _, x := range list {
+		data, err := templatesFS.ReadFile("templates/" + x)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		tmplMessage, err := template.New(x).Parse(string(data))
+		if err != nil {
+			log.Println(err)
+		}
+		render.Add(x, tmplMessage)
+	}
+	Router.HTMLRender = render
 
 	// instantiate routes
 	routes.CreateRoutes(password)

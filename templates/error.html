@@ -1,12 +1,4 @@
-<!--index.html-->
+<!--error.html-->
 
-<!--Embed the header.html template at this location-->
-{{ template "header.html" .}}
-
-  <h1>{{ .title }}</h1>
-  {{ if .message }}
-    {{ .message }}
-  {{ end }}
-
-<!--Embed the footer.html template at this location-->
-{{ template "footer.html" .}}
+<h1>{{ .title }}</h1>
+{{ if .message }} {{ .message }} {{ end }}
