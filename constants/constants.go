@@ -1,10 +1,10 @@
 package constants
 
 import (
-	"log"
 	"os"
 
 	"github.com/gin-gonic/gin"
+	log "github.com/sirupsen/logrus"
 )
 
 var (
@@ -15,7 +15,7 @@ var (
 func InitVar() string {
 	rootDirectory, err := os.Getwd() // directory where uploaded files are stored
 	if err != nil {
-		log.Println(err)
+		log.Fatal(err)
 	}
 	return rootDirectory
 }

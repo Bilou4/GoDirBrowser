@@ -6,6 +6,7 @@ require (
 	github.com/gabriel-vasile/mimetype v1.4.0
 	github.com/gin-contrib/multitemplate v0.0.0-20211002122701-e9e3201b87a0
 	github.com/gin-gonic/gin v1.7.4
+	github.com/sirupsen/logrus v1.8.1
 )
 
 require (

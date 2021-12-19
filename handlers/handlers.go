@@ -3,13 +3,13 @@ package handlers
 import (
 	"errors"
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 	"strings"
 
 	"github.com/gabriel-vasile/mimetype"
 	"github.com/gin-gonic/gin"
+	log "github.com/sirupsen/logrus"
 
 	. "github.com/bilou4/GoDirBrowser/constants"
 	"github.com/bilou4/GoDirBrowser/utils"
@@ -62,7 +62,7 @@ func GetDirectory(c *gin.Context) {
 
 	file, err := os.Stat(RootDirectory + path + subpath)
 	if err != nil {
-		log.Println(err)
+		log.Error(err)
 	}
 
 	if file.IsDir() {
@@ -115,7 +115,7 @@ func Upload(c *gin.Context) {
 	// Upload the file to specific dst.
 	err = c.SaveUploadedFile(file, RootDirectory+path+"/"+file.Filename)
 	if err != nil {
-		log.Fatal(err)
+		log.Error(err)
 	}
 
 	c.Redirect(http.StatusMovedPermanently, c.Request.Referer())

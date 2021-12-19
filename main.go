@@ -4,12 +4,12 @@ import (
 	"embed"
 	"flag"
 	"html/template"
-	"log"
 	"os"
 	"strconv"
 
 	"github.com/gin-contrib/multitemplate"
 	"github.com/gin-gonic/gin"
+	log "github.com/sirupsen/logrus"
 
 	. "github.com/bilou4/GoDirBrowser/constants"
 	"github.com/bilou4/GoDirBrowser/routes"
@@ -36,7 +36,7 @@ func main() {
 	}
 
 	// Set Gin to production mode
-	gin.SetMode(gin.DebugMode)
+	gin.SetMode(gin.ReleaseMode)
 
 	// Set the Router as the default one provided by Gin
 	Router = gin.Default()
@@ -57,7 +57,7 @@ func main() {
 
 		tmplMessage, err := template.New(x).Parse(string(data))
 		if err != nil {
-			log.Println(err)
+			log.Fatal(err)
 		}
 		render.Add(x, tmplMessage)
 	}
@@ -71,10 +71,10 @@ func main() {
 		certificateFileName := "certificate.crt"
 		certificateKeyFileName := "certificate_key.key"
 		if _, err := os.Stat(certificateFileName); err != nil {
-			log.Fatalf("Cannot find certificate file")
+			log.Fatalf("Cannot find certificate file: %s", certificateFileName)
 		}
 		if _, err := os.Stat(certificateKeyFileName); err != nil {
-			log.Fatalf("Cannot find certificate key file")
+			log.Fatalf("Cannot find certificate key file: %s", certificateKeyFileName)
 		}
 		Router.RunTLS(":"+strconv.Itoa(port), certificateFileName, certificateKeyFileName)
 	} else {
